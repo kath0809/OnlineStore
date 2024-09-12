@@ -13,8 +13,13 @@ struct ContentView: View {
             TabView {
                 HomeView()
                 .tabItem {
-                    Label("Shopping", systemImage: "heart.fill")
+                    Label("Shopping", systemImage: "cart")
                 }
+                
+                SearchView()
+                    .tabItem {
+                        Label("Søk", systemImage: "magnifyingglass")
+                    }
             }
         }
         .padding()
