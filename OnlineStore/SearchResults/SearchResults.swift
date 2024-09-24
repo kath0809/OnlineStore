@@ -8,22 +8,80 @@
 import SwiftUI
 
 struct SearchResults: View {
+
+    @State var products = [Product]()
+    private let searchRepository = SearchRepository()
+
     var body: some View {
-        
-            // Bruker en ScrollView for å gjøre det mulig å rulle gjennom innholdet.
         ScrollView {
-                // Viser subkategorier, filtre, og produkter i en rullbar liste.
-            SubcategoriesView()
-            FiltersView()
-            ProductsGridView(product: product)
+            subcategories
+            filters
+            productsGrid
+        }.onAppear {
+            print("view appeared")
+            // request products according to search parameters
+            Task {
+                products = await searchRepository.fetchSearchResults()
+                // fetch some products
+                // update view
+            }
         }
-        .padding() // Legger til litt avstand rundt hele innholdet.
+        .padding()
     }
-    
-        // Oppretter en eksempelprodukt for å vise produktene i rutenettet.
-    private var product = Product(brand: "Brand", name: "Name", price: 200, delivery: "Delivery")
+
+    // MARK: - Private
+
+    var subcategories: some View {
+        ScrollView(.horizontal) {
+            LazyHStack {
+                SearchResultsSubCategoryCell(subcategory: "Polo")
+                SearchResultsSubCategoryCell(subcategory: "Skjorter")
+                SearchResultsSubCategoryCell(subcategory: "Annet")
+                
+            }
+        }
+        .padding(.bottom)
+    }
+
+    @ViewBuilder
+    var filters: some View {
+        Text("Populære filter")
+            .frame(maxWidth: .infinity, alignment: .leading)
+        ScrollView(.horizontal) {
+            LazyHStack {
+                Text("New")
+                Text("Brands")
+                Text("Price")
+            }
+        }
+    }
+
+    var productsGrid: some View {
+        LazyVGrid(columns: [
+            GridItem(.flexible(), spacing: 20),
+            GridItem(.flexible())
+        ],
+                  spacing: 20,
+                  content: {
+            ForEach(products, id: \.self) { product in
+                SearchResultsProductCell(product: product)
+            }
+
+            Section {
+                ForEach(products, id: \.self) { product in
+                    SearchResultsProductCell(product: product)
+                }
+            } header: {
+                Text("Some header")
+                    .frame(maxWidth: .infinity)
+                    .background(.red)
+            }
+
+        })
+    }
 }
 
 #Preview {
     SearchResults()
 }
+

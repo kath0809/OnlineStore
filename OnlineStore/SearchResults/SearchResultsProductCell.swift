@@ -7,37 +7,27 @@
 
 import SwiftUI
 
-struct Product {
-        // let picture: Url / Asset
-    let brand: String
-    let name: String
-    let price: Int
-    let delivery: String
-}
-
 struct SearchResultsProductCell: View {
-    
+
     var product: Product
-    
+//    var isFavorite: Bool
+
     var body: some View {
         VStack(alignment: .leading) {
             imageHeader
             Text(product.brand)
                 .font(.body)
             Text(product.name)
-            
-                // NumberFormatter() + NSNumberFormatterCurrencyStyle
-            
+//            NumberFormatter() + NSNumberFormatterCurrencyStyle
             Text("\(product.price)")
-            Text(product.delivery)
-                .font(.footnote)
+//            Text(product.delivery)
+//                .font(.footnote)
         }
         .background(.green)
     }
-    
-    
-    
-        // MARK: - Private
+
+    // MARK: - Private
+
     private var imageHeader: some View {
         ZStack {
             Image(systemName: "star")
@@ -46,6 +36,8 @@ struct SearchResultsProductCell: View {
             VStack {
                 Button("favorite") {
                     print("toggle favorite")
+                    // Warning, this works because favorite repository uses shared space in UserDefaults
+                    FavoriteProductsRepository().toggleFavorite(product)
                 }
                 .frame(maxWidth: .infinity, alignment: .trailing)
                 Spacer()
@@ -55,9 +47,9 @@ struct SearchResultsProductCell: View {
             }
         }
     }
-    
+
 }
 
-    //#Preview {
-    //    SearchResultsProductCell()
-    //}
+#Preview {
+    SearchResultsProductCell(product: .mock)
+}

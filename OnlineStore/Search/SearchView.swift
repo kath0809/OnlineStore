@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-enum ClothingCategory: String, CaseIterable, Identifiable {
+enum ClothingCategory: String, CaseIterable, Identifiable, Codable {
     
     public var id: String { rawValue }
     
@@ -37,7 +37,10 @@ struct SearchView: View {
 //    ]
     
     @State var searchSuggestions = [String]()
+    
     @State var isLoading = false
+    
+    private let userSettingsRepository = UserSettingsRepository()
     
     
     func didTap(clothingCategory: ClothingCategory) {
@@ -73,6 +76,9 @@ struct SearchView: View {
             }
             
             Spacer()
+        }
+        .onAppear {
+            selectedClothingCategory = userSettingsRepository.get().preferedClothingCategory
         }
     }
     
