@@ -5,81 +5,81 @@
     //  Created by Karima Thingvold on 06/09/2024.
     //
 
+import Foundation
 import SwiftUI
 
-
-enum ClothingType:  String, CaseIterable, Identifiable {
+enum ClothingType: String, CaseIterable, Identifiable {
     
-    public var id: String { rawValue }
-    // id er attributt, liten forbokstav
+    public var id: String {
+        return rawValue
+    }
     
-    case clothes = "Klær"
-    case shoes = "Sko"
+    case klær = "Klær"
+    case sko = "Sko"
     case accessories = "Accessories"
     case streetwear = "Streetwear"
+
     
 }
 
+
 struct HomeView: View {
     
-//    @State var isShowingSheet: Bool = false
     @State var isShowingSheet = false
     
-    @State var selectedClothingType: ClothingType = .clothes
+    @State var selectedClothingType: ClothingType = .klær
     
     func didTap(clothingType: ClothingType) {
         print("Tapped \(clothingType)")
         
         selectedClothingType = clothingType
         isShowingSheet = true
-        
     }
     
+    
     var body: some View {
+        
         VStack {
             
             ZStack {
-                
                 Color.orange
                 HStack {
                     
                     VStack(alignment: .leading) {
-                        
                         Text("Kickstart høsten")
                             .font(.largeTitle)
                             .fontWeight(.bold)
+                        
                         Text("Spar opptil 50% på tusenvis av varer")
                             .font(.title)
-                        
                     }
                     .padding(.leading)
                     Spacer()
+                    
                 }
             }
-            .frame(height: 150)
             .foregroundStyle(.white)
-            
+            .frame(height: 160)
             
             
             
             ZStack {
-                Color(.secoundaryOrange)
+                Color("SecondaryOrange")
                 
                 VStack {
                     Text("Oppdag mer:")
                     
                     ScrollView(.horizontal, showsIndicators: false) {
-                        
                         HStack {
-                            
                             ForEach(ClothingType.allCases) {
                                 clothingType in
                                 
-                                Button {
+                                Button(action: {
                                     didTap(clothingType: clothingType)
-                                } label: {
+                                }, label: {
+                                   
                                     Text("\(clothingType.rawValue)")
-                                }
+                                })
                             }
                         }
                         .fontWeight(.bold)
@@ -91,12 +91,17 @@ struct HomeView: View {
             
             productCategoryList
             
-                .sheet(isPresented: $isShowingSheet, content: {
-                    Text("Sheet is showing \(selectedClothingType)")
-                })
+            
         }
+        .sheet(isPresented: $isShowingSheet, content: {
+            
+            ProductView(selectedClothingType: selectedClothingType)
+            
+        })
         
-    } // body
+    }
+
+// body
     
     var productCategoryList: some View {
         ZStack {
@@ -108,55 +113,42 @@ struct HomeView: View {
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack {
                         Button(action: {
-                            print("trykket baby 0-12 mnd")
+                            print("trykka baby 0-12 mnd")
                         }, label: {
                             ZStack {
-                                VStack//(spacing: 0)
-                                {
+                                VStack {
+                                    
                                     Image("baby")
-                                        //.resizable()
                                     ZStack {
                                         Color.blue
                                         Text("Baby (0-12 måneder)")
-                                            .foregroundColor(.white)
+                                            .foregroundStyle(.white)
                                     }
                                 }
+                                
                             }
                         })
                         
+                        
                         Button(action: {
-                            print("trykket gutt (1-3 år)")
+                            print("trykka jente (1-3 år)")
                         }, label: {
                             ZStack {
-                                VStack// (spacing: 0)
-                                {
-                                    Image("youngBoy")
+                                VStack {
                                     
-                                    ZStack {
-                                        Color.green
-                                        Text("Gutt (1-3 år)")
-                                            .foregroundColor(.white)
-                                    }
-                                }
-                            }
-                        })
-                        
-                        Button(action: {
-                            print("trykket jente (1-3 år)")
-                        }, label: {
-                            ZStack {
-                                VStack//(spacing: 0)
-                                {
-                                    Image("youngGirl")
+                                    Image("girl")
                                     ZStack {
                                         Color.red
                                         Text("Jente (1-3 år)")
-                                            .foregroundColor(.white)
+                                            .foregroundStyle(.white)
                                     }
                                 }
+                                
                             }
                         })
+                        
                     }
+                    
                 }
             }
         }
