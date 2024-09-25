@@ -18,7 +18,21 @@ enum ClothingType: String, CaseIterable, Identifiable {
     case sko = "Sko"
     case accessories = "Accessories"
     case streetwear = "Streetwear"
-
+    
+    
+    var url: URL {
+        switch self {
+        case .klær:
+            return URL.init(string: "https://raw.githubusercontent.com/BeiningBogen/PG5602/refs/heads/master/Nettbutikk/products.json")!
+            
+        case .sko:
+            return URL.init(string: "https://raw.githubusercontent.com/BeiningBogen/PG5602/refs/heads/master/Nettbutikk/sko.json")!
+            
+                // Prøv å unngå der mulig.
+        default:
+            return URL.init(string: "https://raw.githubusercontent.com/BeiningBogen/")!
+        }
+    }
     
 }
 
@@ -77,7 +91,7 @@ struct HomeView: View {
                                 Button(action: {
                                     didTap(clothingType: clothingType)
                                 }, label: {
-                                   
+                                    
                                     Text("\(clothingType.rawValue)")
                                 })
                             }
@@ -100,8 +114,8 @@ struct HomeView: View {
         })
         
     }
-
-// body
+    
+        // body
     
     var productCategoryList: some View {
         ZStack {
@@ -136,10 +150,27 @@ struct HomeView: View {
                             ZStack {
                                 VStack {
                                     
-                                    Image("girl")
+                                    Image("youngGirl")
                                     ZStack {
                                         Color.red
                                         Text("Jente (1-3 år)")
+                                            .foregroundStyle(.white)
+                                    }
+                                }
+                                
+                            }
+                        })
+                        
+                        Button(action: {
+                            print("trykket gutt (1-3 år)")
+                        }, label: {
+                            ZStack {
+                                VStack {
+                                    
+                                    Image("youngBoy")
+                                    ZStack {
+                                        Color.green
+                                        Text("Gutt (1-3 år)")
                                             .foregroundStyle(.white)
                                     }
                                 }
