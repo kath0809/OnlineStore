@@ -61,8 +61,9 @@ struct HomeView: View {
                     
                     VStack(alignment: .leading) {
                         Text("Kickstart høsten")
-                            .font(.largeTitle)
-                            .fontWeight(.bold)
+//                            .font(.largeTitle)
+//                            .fontWeight(.bold)
+                            .rainbowStyle()
                         
                         Text("Spar opptil 50% på tusenvis av varer")
                             .font(.title)
