@@ -16,20 +16,27 @@ struct ContentView: View {
                     Label("Shopping", systemImage: "heart.fill")
                     // Label("Shopping", image: "baby")
                 }
+            
             NavigationStack {
                 SearchView()
             }
             .tabItem {
                 Label("Søk", systemImage: "magnifyingglass")
             }
+            
             FavoritesView(products: [])
                 .tabItem {
                     Label("Favorites", systemImage: "heart")
                 }
-            BasketView()
+            
+            CartView()
                 .tabItem {
-                    Label("Basket", systemImage: "basket")
+                    Label("Cart", systemImage: "basket")
                 }
+                .toolbarBackground(.clear, for: .tabBar)
+                .toolbarBackground(.visible, for: .tabBar)
+            
+            
             SettingsView(userSettings: UserSettingsRepository().get())
                 .tabItem {
                     Label("Settings", systemImage: "gear")
