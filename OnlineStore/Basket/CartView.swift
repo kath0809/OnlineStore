@@ -1,44 +1,39 @@
-//
-//  BasketView.swift
-//  OnlineStore
-//
-//  Created by Karima Thingvold on 24/09/2024.
-//
+    //
+    //  BasketView.swift
+    //  OnlineStore
+    //
+    //  Created by Karima Thingvold on 24/09/2024.
+    //
 
 import SwiftUI
 
 struct CartView: View {
-
-    @State var isPulsing = false
-    @State var isRotating = false
-
-
-
+    
+    @State private var animationPosistion = CGPoint.init(x: 200, y: 200)
+    
     var body: some View {
-        VStack {
-            Image(systemName: "cart")
-                .resizable()
-                .scaledToFit()
-                .frame(width: 100)
-            
-                .scaleEffect(isPulsing ? 1.2 : 1)
-                .animation(Animation .easeInOut(duration: 1)
-                    .repeatForever(autoreverses: true)
-                           , value: isPulsing)
-            
-                .rotationEffect(isRotating ? .degrees(0) : .degrees(360))
-            
-                .animation(Animation .easeInOut(duration: 1)
-                    .repeatForever(autoreverses: false)
-                           , value: isRotating)
-            
-            Text("Hello!")
-                .font(.largeTitle)
+        GeometryReader { geometry in
+            VStack {
+                Image(systemName: "cart")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 100)
+                    .pulseEffect()
+                    .rotationEffect()
+                
+                    .position(animationPosistion)
+                
+                Text("Hello!")
+                    .font(.largeTitle)
+            }
+            .rainbowBackground()
         }
-        .rainbowBackground()
-        .onAppear {
-            isPulsing = true
-            isRotating = true
+        
+        .onTapGesture { location in
+            print(location)
+            withAnimation(.spring) {
+                animationPosistion = location
+            }
         }
     }
 }
