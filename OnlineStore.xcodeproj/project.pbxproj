@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		F6306BC22C99976A00391EDB /* DataAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F6306BC12C99976A00391EDB /* DataAssets.xcassets */; };
+		F6328BB62CBE6FB300AC9AD7 /* Product+SwiftData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6328BB52CBE6FB300AC9AD7 /* Product+SwiftData.swift */; };
 		F63EC4FD2C8B3C5700901891 /* OnlineStoreApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F63EC4FC2C8B3C5700901891 /* OnlineStoreApp.swift */; };
 		F63EC4FF2C8B3C5700901891 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F63EC4FE2C8B3C5700901891 /* ContentView.swift */; };
 		F63EC5012C8B3C5900901891 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F63EC5002C8B3C5900901891 /* Assets.xcassets */; };
@@ -59,6 +60,7 @@
 
 /* Begin PBXFileReference section */
 		F6306BC12C99976A00391EDB /* DataAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = DataAssets.xcassets; sourceTree = "<group>"; };
+		F6328BB52CBE6FB300AC9AD7 /* Product+SwiftData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Product+SwiftData.swift"; sourceTree = "<group>"; };
 		F63EC4F92C8B3C5700901891 /* OnlineStore.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OnlineStore.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F63EC4FC2C8B3C5700901891 /* OnlineStoreApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnlineStoreApp.swift; sourceTree = "<group>"; };
 		F63EC4FE2C8B3C5700901891 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -239,6 +241,7 @@
 			isa = PBXGroup;
 			children = (
 				F6F3CC7F2CA2C85800CFCBF2 /* Product.swift */,
+				F6328BB52CBE6FB300AC9AD7 /* Product+SwiftData.swift */,
 				F6F3CC772CA2C7B300CFCBF2 /* UserSettings.swift */,
 			);
 			path = Entities;
@@ -401,6 +404,7 @@
 				F6B216312CA428EE008696A6 /* Data+Prettyprint.swift in Sources */,
 				F6F3CC7A2CA2C80100CFCBF2 /* FavoritesView.swift in Sources */,
 				F6F3CC762CA2C77C00CFCBF2 /* SettingsView.swift in Sources */,
+				F6328BB62CBE6FB300AC9AD7 /* Product+SwiftData.swift in Sources */,
 				F6F3CC802CA2C85D00CFCBF2 /* Product.swift in Sources */,
 				F6F3CC822CA2C87C00CFCBF2 /* SearchRepository.swift in Sources */,
 				F63EC4FD2C8B3C5700901891 /* OnlineStoreApp.swift in Sources */,

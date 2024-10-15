@@ -10,7 +10,7 @@ import SwiftData
 
 struct ProductView: View {
     
-    // Vi lager en lokal attributt fra en Enviroment variabel
+        // Vi lager en lokal attributt fra en Enviroment variabel
     @Environment(\.modelContext) var modelContext
     
     @State var selectedClothingType: ClothingType
@@ -39,8 +39,11 @@ struct ProductView: View {
                     Text("I handlekurven: \(amountInCart)")
                     
                     Stepper("Legg til i handlekurv") {
-                        modelContext.insert(selectedProduct)
-                        //amountInCart += 1
+                        
+                            // Lage kopi av produktet.
+                        modelContext.insert(Product(id: selectedProduct.id, brand: selectedProduct.brand, name: selectedProduct.name, price: selectedProduct.price, fastDelivery: selectedProduct.fastDelivery))
+                        
+                            //amountInCart += 1
                         do {
                             try modelContext.save()
                         } catch {
@@ -48,19 +51,36 @@ struct ProductView: View {
                         }
                         
                         print("Trykket 'legg til'")
-                        
-                        var fetchDescriptor = FetchDescriptor<Product>()
-                        fetchDescriptor.predicate = nil
-                        
-                        do {
-                            let result = try modelContext.fetch(fetchDescriptor)
-                            amountInCart = result.count
-                        } catch {
-                            print("Error ved fetching etter insert \(error.localizedDescription)")
-                        }
+                        amountInCart = Product.allStoredProducts(inContext: modelContext).count
                         
                     } onDecrement: {
+                        
                         modelContext.delete(selectedProduct)
+                        
+                            // Select * From Products where id == selectedProduct.is
+                        let result = Product.allStoredProducts(withId: selectedProduct.id, inContext: modelContext)
+                        
+                        if let product = result.first {
+                            modelContext.delete(product)
+                            amountInCart = result.count - 1
+                            
+                        } else {
+                            amountInCart = result.count
+                        }
+                        
+                    }
+                }
+            }
+        }
+        .padding()
+        .font(.title2)
+        
+        Text(" \(selectedClothingType.rawValue)")
+        ScrollView(.horizontal) {
+            HStack {
+                ForEach(products) { product in
+                    Button {
+                        self.selectedProduct = product
                         
                         var fetchDescriptor = FetchDescriptor<Product>()
                         
@@ -71,51 +91,23 @@ struct ProductView: View {
                             print("Error ved fetch etter delete! \(error.localizedDescription)")
                         }
                         
-                        amountInCart -= 1
-                        print("Trykket 'fjern produkt'")
-                        
-                    }
-
-                } else {
-                    Text("Ikke valgt...")
-                }
-            }
-            .padding()
-            .font(.title2)
-            
-            Text(" \(selectedClothingType.rawValue)")
-            ScrollView(.horizontal) {
-                HStack {
-                    ForEach(products) { product in
-                        Button {
-                            self.selectedProduct = product
-                            
-                            var fetchDescriptor = FetchDescriptor<Product>()
-                            
-                            do {
-                                let result = try modelContext.fetch(fetchDescriptor)
-                                amountInCart = result.count
-                            } catch {
-                                print("Error ved fetch etter delete! \(error.localizedDescription)")
+                    } label: {
+                        ZStack {
+                            Color.yellow
+                            VStack {
+                                Spacer()
+                                Text(product.name)
+                                    .padding(.bottom)
+                                    .font(.title3)
                             }
-                            
-                        } label: {
-                            ZStack {
-                                Color.yellow
-                                VStack {
-                                    Spacer()
-                                    Text(product.name)
-                                        .padding(.bottom)
-                                        .font(.title3)
-                                }
-                            }
-                            //.frame(height: 400)
-                            .frame(height: UIScreen.main.bounds.height * 0.4)
                         }
+                            //.frame(height: 400)
+                        .frame(height: UIScreen.main.bounds.height * 0.4)
                     }
                 }
             }
         }
+        
         .onAppear {
             Task {
                 await getProducts()
@@ -129,7 +121,6 @@ struct ProductView: View {
                 }
         }
     }
-    
     
     
     
@@ -163,6 +154,6 @@ struct ProductView: View {
 
 #Preview {
     ProductView(selectedClothingType: .klær)
-    // ProductView(selectedClothingType: .allCases.randomElement()!)
-    // Lurt å bruke for å se alle elementene
+        // ProductView(selectedClothingType: .allCases.randomElement()!)
+        // Lurt å bruke for å se alle elementene
 }
