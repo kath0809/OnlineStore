@@ -16,32 +16,32 @@ struct CartView: View {
     
         // Spørring til databasen, samme som -> Select * from Products
         // Kan sortere på hva som helst
-    @Query(sort: \Product.name) var products:
-    [Product]
-
-    
-    
-    // Set = when you need to ensure that each element appears only once in a collection.
+    @Query(sort: \Product.name) var products: [Product]
     var uniqueProducts: [Product] {
-
-        /// Lag ett Set med alle produkte IDer
+        
+            /// Lag ett Set med alle produkte IDer
         var identifiedIds: Set<Int> = []
-        /// FIltrer alle produkter basert på logikken i closuren:
+            /// FIltrer alle produkter basert på logikken i closuren:
         return products.filter { product in
-            /// Hvis de sette idene inneholder produktet vi er på nå:
+                /// Hvis de sette idene inneholder produktet vi er på nå:
             if identifiedIds.contains(product.id) {
-                /// fjern produktet fra arrayet
+                    /// fjern produktet fra arrayet
                 return false
             } else {
-                /// Legg til i Set over "identifiserte id´er"
+                    /// Legg til i Set over "identifiserte id´er"
                 identifiedIds.insert(product.id)
-                /// Legg til i Arrayet vi returnerer fra funksjonen (filter)
+                    /// Legg til i Arrayet vi returnerer fra funksjonen (filter)
                 return true
             }
         }
     }
     
-    
+    var totalPrice: Double {
+         uniqueProducts.reduce(0) { result, product in
+             let quantity = Product.allStoredProducts(withId: product.id, inContext: modelContext).count
+             return result + (Double(quantity) * Double(product.price))
+         }
+     }
     
     var body: some View {
         
@@ -49,26 +49,28 @@ struct CartView: View {
             emptyState
         } else {
             productList
+            totalFooter
         }
     }
     
-        // Kan evt også ha vært ett eget view. Men da må den også få referanse på state til produktene. Det slipper man ved og ha den her.
     var productList: some View {
         List {
             ForEach(uniqueProducts) { product in
-                HStack {
-                    Text(product.name)
-                    Stepper("",
-                            onIncrement: {
-                        product.storedInDatabase(context: modelContext)
-                    }, onDecrement: {
-                        product.deleteFromDatabase(context: modelContext)
-                    })
-                }
+                ProductRow(product: product)
             }
         }
     }
     
+    var totalFooter: some View {
+          HStack {
+              Spacer()
+              Text("Total Price: \(totalPrice, specifier: "%.2f") kr")
+                  .font(.title3)
+                  .fontWeight(.semibold)
+                  .padding()
+          }
+          .background(Color(.systemGray6))
+      }
     
     var emptyState: some View {
         GeometryReader { geometry in
@@ -95,7 +97,6 @@ struct CartView: View {
             }
         }
     }
-    
 }
 
 #Preview {

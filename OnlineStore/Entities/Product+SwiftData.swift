@@ -42,9 +42,8 @@ extension Product {
         }
     }
     
-    /**
-     Context: Hvilke DB skal vi slette fra
-     */
+    
+    /// - parameter Hvilke DB skal vi slette fra
     func deleteFromDatabase(context: ModelContext) {
         /// Hent ut produkt med samme id som self
         if let product = Product.allStoredProducts(withId: self.id, inContext: context).first {

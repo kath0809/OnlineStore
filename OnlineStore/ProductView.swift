@@ -48,7 +48,7 @@ struct ProductView: View {
                     Stepper("Legg til i handlekurv") {
                         
                         selectedProduct.storedInDatabase(context: modelContext)
-                       
+                        
                         amountInCart = Product.allStoredProducts(withId: selectedProduct.id, inContext: modelContext).count
                         
                         print("Trykket legg til produkt")
@@ -73,9 +73,6 @@ struct ProductView: View {
                 ForEach(products) { product in
                     Button {
                         didTap(product: product)
-                        
-                        
-                        
                     } label: {
                         ZStack {
                             if selectedProduct?.id == product.id {
@@ -114,7 +111,7 @@ struct ProductView: View {
     
     
     func getProducts() async {
-do {
+        do {
             
             let url = selectedClothingType.url
             
@@ -130,9 +127,9 @@ do {
             
             self.products = products
             selectedProduct = products.first
-    
-    // Oppdater handlekurven med riktig antall produkter.
-    amountInCart = Product.allStoredProducts(withId: selectedProduct?.id, inContext: modelContext).count
+            
+                // Oppdater handlekurven med riktig antall produkter.
+            amountInCart = Product.allStoredProducts(withId: selectedProduct?.id, inContext: modelContext).count
             
         } catch {
             isShowingError = true
@@ -146,6 +143,6 @@ do {
         // ProductView(selectedClothingType: .allCases.randomElement()!)
         // Lurt å bruke for å se alle elementene
     
-    // Spesifier hvilken database preview skal bruke for at ting som har med databsen skal fungere i preview og ikke bare i simulator.
+        // Spesifier hvilken database preview skal bruke for at ting som har med databsen skal fungere i preview og ikke bare i simulator.
         .modelContainer(sharedModelContainer)
 }
