@@ -32,8 +32,7 @@ extension Product {
     
     func storedInDatabase(context: ModelContext) {
             /// Lag kopi av self (Produktet), og legg inn i DB
-        context.insert(Product(id: self.id, brand: self.brand, name: self.name, price: self.price, fastDelivery: self.fastDelivery))
-        
+        context.insert(Product(id: self.id, brand: self.brand, name: self.name, price: self.price, fastDelivery: self.fastDelivery, imageURL: self.imageURL, suppliers: self.suppliers))
         do {
                 /// Skriv endringer i modelcontext til disk
             try context.save()

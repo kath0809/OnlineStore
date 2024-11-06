@@ -33,6 +33,32 @@ struct ProductView: View {
         amountInCart = Product.allStoredProducts(withId: product.id, inContext: modelContext).count
     }
     
+    func suppliersView(product: Product) -> some View {
+        VStack(alignment: .leading) {
+            Text("Leverandør:")
+                .padding(.bottom)
+                .font(.subheadline)
+    
+            
+            ForEach(product.suppliers) { supplier in
+                HStack {
+                    Text(supplier.name)
+                    Spacer()
+                    Text(supplier.country)
+                    Text(supplier.contactInfo)
+                }
+                .font(.footnote)
+                
+            }
+        }
+        .padding()
+        .background{
+            Color.gray
+                .opacity(0.3)
+                .clipShape(RoundedRectangle(cornerRadius: 10))
+        }
+    }
+    
     var body: some View {
         VStack {
             Group {
@@ -61,6 +87,7 @@ struct ProductView: View {
                         amountInCart = result.count
                         print("Trykket fjern produkt")
                     }
+                    suppliersView(product: selectedProduct)
                 }
             }
         }
@@ -75,11 +102,28 @@ struct ProductView: View {
                         didTap(product: product)
                     } label: {
                         ZStack {
-                            if selectedProduct?.id == product.id {
-                                Color.yellow.opacity(0.5)
-                            } else {
-                                Color.yellow
+                            AsyncImage(url: product.imageURL) { image in
+                                image.resizable()
+                                    .frame(width: 200, height: 200)
+                                    .clipShape(.rect(cornerRadius: 20))
+                                    .overlay {
+                                    if selectedProduct?.id == product.id {
+                                        RoundedRectangle(cornerRadius: 20)
+                                            .stroke(Color.green, lineWidth: 5)
+                                    }
+                                }
+                                
+                            } placeholder: {
+                                
+                                Color.blue
+                                    .frame(width: 200, height: 200)
+                                    .clipShape(.rect(cornerRadius: 20))
+                                
+                                ProgressView()
                             }
+                            
+                            
+                            
                             VStack {
                                 Spacer()
                                 Text(product.name)
