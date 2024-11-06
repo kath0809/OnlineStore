@@ -45,7 +45,10 @@ struct ProductView: View {
                     Text(supplier.name)
                     Spacer()
                     Text(supplier.country)
+                    AsyncImage(url: supplier.flagURL)
+                    Spacer()
                     Text(supplier.contactInfo)
+                    
                 }
                 .font(.footnote)
                 
